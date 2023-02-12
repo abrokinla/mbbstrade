@@ -12,8 +12,8 @@ submitDiv.addEventListener("click", function(e) {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
-  const transPin = document.getElementById("transPin").value;
-  const confirmTransPin = document.getElementById("confirmTransPim").value;
+  // const transPin = document.getElementById("transPin").value;
+  // const confirmTransPin = document.getElementById("confirmTransPim").value;
 
   // Compare the password and confirm password
   if (password !== confirmPassword) {
@@ -22,43 +22,30 @@ submitDiv.addEventListener("click", function(e) {
     return;
   }
   // Compare the trans-pin and confirm trans-pin
-  if (transPin !== confirmTransPin) {
-    console.log("Transaction Pin do not match");
-    // console.error("Password do not match");
-    return;
-  }
+  // if (transPin !== confirmTransPin) {
+  //   console.log("Transaction Pin do not match");
+  //   return;
+  // }
 
   // Create a new user with email and password
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function(user) {
-      console.log("User created:", user);
-      // Get the other form fields
-      const refname = document.getElementById("refname").value;
-      const first_name = document.getElementById("first_name").value;
-      const last_name = document.getElementById("last_name").value;
-      const username = document.getElementById("username").value;
-      const transPin = document.getElementById("transPin").value;
-      const country = document.getElementById("country").value;
-      // Get the current user
-      const currentUser = firebase.auth().currentUser;
-      // Save the user data to the Firebase Realtime Database
-      firebase.database().ref("users/" + currentUser.uid).set({
-        refname: refname,
-        first_name: first_name,
-        email: email,
-        last_name:last_name,
-        username:username,
-        transPin:transPin,
-        country: country
-      })
-      .then(function() {
-        console.log("User data saved to the database");
-      })
-      .catch(function(error) {
-        console.error("Error saving user data:", error);
-      });
+      user.sendEmailVerification().then(function() {
+      // Email sent
+      console.log("Email verification sent");
+      alert("User created successfully. Please check your email to verify your account.");      
+      window.location.href = "register.html";
+    }).catch(function(error) {
+      // An error happened
+      console.error("Error sending email verification:", error);
+      alert("Error sending email verification: " + error.message);
+    });       
+      
     })
     .catch(function(error) {
-      console.error("Error creating user:", error);
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.error("Error creating user:", errorCode, errorMessage);
+      alert("Error creating user: " + errorMessage);
     });
   });
