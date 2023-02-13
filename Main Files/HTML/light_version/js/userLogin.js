@@ -9,30 +9,39 @@ loginDiv.addEventListener("click", function(e) {
   // Create a new user account
   // Get the email and password from the form
   const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const password = document.getElementById("pword").value;
+
+  function showFlashNotification(message) {
+    var notification = document.createElement("div");
+    notification.innerHTML = message;
+    notification.style.backgroundColor = "#d9edf7";
+    notification.style.color = "#31708f";
+    notification.style.padding = "15px";
+    notification.style.position = "fixed";
+    notification.style.top = "0";
+    notification.style.left = "0";
+    notification.style.right = "0";
+    notification.style.textAlign = "center";
+    document.body.appendChild(notification);
+  
+    setTimeout(function() {
+      notification.style.display = "none";
+    }, 3000);
+  }
   
   // Sign in the user with email and password
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(user) {
       console.log("User signed in:", user);
-      // Get the current user
-      const currentUser = firebase.auth().currentUser;
-      // Retrieve the user data from the Firebase Realtime Database
-      firebase.database().ref("users/" + currentUser.uid).once("value")
-        .then(function(snapshot) {
-          const userData = snapshot.val();
-          // Display the user's name on the dashboard
-          const nameSpan = document.querySelector(".current span.hidden_xs_content");
-          nameSpan.textContent = `Hi, ${userData.first_name}!`;
-        })
-        .catch(function(error) {
-          console.error("Error retrieving user data:", error);
-        });
+      showFlashNotification("verification successful")      
       // Redirect the user to the home page or another page as desired
       window.location.href = "my_account.html";
     })
     .catch(function(error) {
-      console.error("Error signing in:", error);
+      let errorCode = error.code;
+      let errorMessage = error.message;
+      console.error("Error creating user:", errorCode, errorMessage);
+      showFlashNotification("Error creating user: " + errorMessage);
       // Show an error message to the user
     });
 });
