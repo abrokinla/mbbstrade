@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost:3306";
 $username = "mmbstrad_mmbstrad";
-$password = "123ADEabraham";
+$password = "xxxxxxxxxx";
 $dbname = "mmbstrad_mmbstradedb";
 
 // Create connection
@@ -23,8 +23,8 @@ $email = $_POST['email'];
 $country = $_POST['country'];
 
 // Insert the data into the database
-$sql = "INSERT INTO your_table_name (full_name, first_name, last_name, username, pword, trans_pin, email, country) 
-VALUES ('$ref_name', '$first_name', '$last_name', '$username', '$pasword', '$trans_pin', '$email', '$country')";
+$sql = "INSERT INTO user (referal_name, first_name, last_name, username, pword, transpIn, email, country)
+VALUES ('$ref_name', '$first_name', '$last_name', '$username', '$password', '$trans_pin', '$email', '$country')";
 
 if (mysqli_query($conn, $sql)) {
     echo "New record created successfully";

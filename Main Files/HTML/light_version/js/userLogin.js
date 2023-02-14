@@ -35,7 +35,7 @@ loginDiv.addEventListener("click", function(e) {
       console.log("User signed in:", user);
       showFlashNotification("verification successful")      
       // Redirect the user to the home page or another page as desired
-      window.location.href = "my_account.html";
+      window.location.href = "all_transactions.html";
     })
     .catch(function(error) {
       let errorCode = error.code;
