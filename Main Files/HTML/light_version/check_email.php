@@ -3,11 +3,11 @@
 
     $servername = "localhost:3306";
     $username = "mmbstrad_mmbstrad";
-    $password = "xxxxxxxxxx";
+    $password = "123ADEabraham";
     $dbname = "mmbstrad_mmbstradedb";
 
   // Connect to the database
-  $db = mysqli_connect("host", "username", "password", "database_name");
+  $db = mysqli_connect($servername, $username, $password, $dbname);
   
   // Check connection
   if (mysqli_connect_errno()) {
