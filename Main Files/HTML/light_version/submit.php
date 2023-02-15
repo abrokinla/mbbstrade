@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost:3306";
 $username = "mmbstrad_mmbstrad";
-$password = "xxxxxxxxxx";
+$password = "123ADEabraham";
 $dbname = "mmbstrad_mmbstradedb";
 
 // Create connection
@@ -13,7 +13,7 @@ if (!$conn) {
 }
 
 // Retrieve the form data
-$refname = $_POST['ref_name'];
+$ref_name = $_POST['refname'];
 $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
 $username = $_POST['username'];

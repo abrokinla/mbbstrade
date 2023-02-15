@@ -1,12 +1,14 @@
 // initialize firebase
 firebase.initializeApp(firebaseConfig);
+
 // Get the submit div
 const loginDiv = document.querySelector(".login_btn a");
+
 // Click event listener to the submit div
 loginDiv.addEventListener("click", function(e) {
   // Prevent the default link behavior
   e.preventDefault();
-  // Create a new user account
+
   // Get the email and password from the form
   const email = document.getElementById("email").value;
   const password = document.getElementById("pword").value;
@@ -28,20 +30,35 @@ loginDiv.addEventListener("click", function(e) {
       notification.style.display = "none";
     }, 3000);
   }
-  
+
   // Sign in the user with email and password
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function(user) {
       console.log("User signed in:", user);
-      showFlashNotification("verification successful")      
-      // Redirect the user to the home page or another page as desired
-      window.location.href = "all_transactions.html";
+      showFlashNotification("Verification successful");
+      
+      // Fetch data from fetchData.php using the email address
+      const fetchDataURL = `fetchData.php?email=${email}`;
+      
+      $.ajax({
+        url: fetchDataURL,
+        type: "GET",
+        success: function(data) {
+          console.log(data);
+          // Redirect the user to the all_transactions.html page and pass the data to the page
+          // window.location.href = `all_transactions.html?data=${data}`;
+        },
+        error: function(error) {
+          console.error(error);
+          showFlashNotification("Error fetching data: " + error);
+        }
+      });
     })
     .catch(function(error) {
       let errorCode = error.code;
       let errorMessage = error.message;
-      console.error("Error creating user:", errorCode, errorMessage);
-      showFlashNotification("Error creating user: " + errorMessage);
+      console.error("Error authenticating user:", errorCode, errorMessage);
+      showFlashNotification("Error authenticating user: " + errorMessage);
       // Show an error message to the user
     });
 });
