@@ -13,7 +13,7 @@ if (!$conn) {
 }
 
 // Retrieve the form data
-$ref_name = $_POST['refname'];
+$ref_name = $_POST['ref_name'];
 $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
 $username = $_POST['username'];
