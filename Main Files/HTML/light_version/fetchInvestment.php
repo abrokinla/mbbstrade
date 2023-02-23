@@ -21,10 +21,10 @@
     exit();
   }
 
-  // Check if the user_id is set in the session storage
-  if(isset($_SESSION['userid'])) {
-    // Get the user_id from the session storage
-    $user_id = $_SESSION['userId'];
+  // Check if the user_id is set in the URL
+  if(isset($_GET['user_id'])) {
+    // Get the user_id from the URL
+    $user_id = $_GET['user_id'];
 
     // Prepare and execute the SQL query to select the investments for the user
     $sql = "SELECT * FROM investment WHERE user_id = '$user_id'";
@@ -45,8 +45,8 @@
       echo "No investments found for user with ID: " . $user_id;
     }
   } else {
-    // User ID is not set in the session storage
-    echo "User ID not found in session storage.";
+    // User ID is not set in the URL
+    echo "User ID not found in URL.";
   }
 
   // Close the database connection

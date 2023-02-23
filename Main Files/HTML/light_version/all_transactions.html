@@ -50,17 +50,19 @@ Author: Webstrotmmbstrade
             const greetingElement = document.getElementById('greeting');
             greetingElement.textContent = `Hi, ${firstName}!`;
 
-             // Retrieve investmentData from sessionStorage
-            const investmentData = JSON.parse(sessionStorage.getItem('investmentData'));
+            //  // Retrieve investmentData from localStorage
+            // const investmentData = JSON.parse(localStorage.getItem('investmentData'));
         
-            // Retrieve amount from investmentData
-            const amount = investmentData.amount;
-            console.log(amount);
-            
+            // // Retrieve amount from investmentData
+            // // const amount = investmentData.amount;
+            // const investedAmountElement = document.querySelector('#invested-amount');
+            // investedAmountElement.innerHTML = `:&nbsp;&nbsp; ${investmentData.amount}`;
+            // console.log(investmentData.amount);
 
-            // Display amount in the dd tag
-            const investedAmountTag = document.getElementById('invested-amount');
-            investedAmountTag.innerHTML = `:&nbsp;&nbsp;${amount}`;
+
+            // // Display amount in the dd tag
+            // const investedAmountTag = document.getElementById('invested-amount');
+            // investedAmountTag.innerHTML = `:&nbsp;&nbsp;${amount}`;
         });
     </script>
       
@@ -499,7 +501,7 @@ Author: Webstrotmmbstrade
                     <h3>Available Balance</h3>
                     <dl class="userdescc">
                         <dt>Invested</dt>
-                        <dd id="invested-amount">:&nbsp;&nbsp;<a href="#" id="view-amount-link">View amount</a> ${amount}</dd>
+                        <dd id="invested-amount">:&nbsp;&nbsp; </dd>
                         <dt>interest</dt>
                         <!-- <dd>:&nbsp;&nbsp;$ 498.61</dd>
                         <dt>PerfectMoney</dt>
@@ -1101,53 +1103,6 @@ Author: Webstrotmmbstrade
     <script src="js/get_investment.js"></script>
     <!-- <script src="js/checkToken.js"></script> -->
     <!--main js file end-->
-    <script>
-        function fetchInvestmentData() {
-            const userData = JSON.parse(sessionStorage.getItem('userData'));
-            const userId = userData.userId;
-
-            const fetchInvestmentDataURL = `fetchInvestment.php?user_id=${userId}`;
-
-            $.ajax({
-                url: fetchInvestmentDataURL,
-                type: 'GET',
-                success: function (data) {
-                try {
-                    const investmentData = data[0];
-                    console.log(investmentData.amount)
-
-                    // Display the investment amount
-                    const investedAmountEl = document.getElementById('invested-amount');
-                    investedAmountEl.innerHTML = `: ${investmentData.amount}`;
-
-                    // Add a link to view the amount
-                    const viewAmountLink = document.createElement('a');
-                    viewAmountLink.href = fetchInvestmentDataURL;
-                    viewAmountLink.target = '_blank';
-                    viewAmountLink.innerText = 'View amount';
-                    investedAmountEl.appendChild(viewAmountLink);
-
-                    console.log('Investment data fetched successfully!');
-                } catch (error) {
-                    console.log('Error parsing investment data: ' + error);
-                }
-                },
-                error: function (error) {
-                console.log('Error fetching investment data: ' + error.responseText);
-                },
-            });
-            }
-
-            // Add a click event listener to the "View amount" link
-            const viewAmountLink = document.getElementById('view-amount-link');
-            viewAmountLink.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            // Call the fetchInvestmentData function
-            fetchInvestmentData();
-            });
-
-    </script>
     
 </body>
 
