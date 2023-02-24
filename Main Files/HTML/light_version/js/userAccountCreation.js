@@ -37,7 +37,7 @@ submitDiv.addEventListener("click", function(e) {
   
 
   // Get the form data
-  const ref_name = document.getElementById("refname").value;
+  const ref_name = document.getElementById("ref_name").value;
   const first_name = document.getElementById("first_name").value;
   const last_name = document.getElementById("last_name").value;
   const username = document.getElementById("username").value;
@@ -81,7 +81,6 @@ submitDiv.addEventListener("click", function(e) {
             console.log(xhr.responseText);
           }
         };
-        console.log("we are here");
         xhr.send("ref_name=" + ref_name + "&first_name=" + first_name + "&last_name=" + last_name + "&username=" + username + "&password=" + password + "&transPin=" + transPin + "&email=" + email + "&country=" + country);
       }
     }

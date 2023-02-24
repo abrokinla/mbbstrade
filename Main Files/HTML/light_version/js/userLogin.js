@@ -25,40 +25,57 @@ loginDiv.addEventListener("click", function(e) {
     notification.style.right = "0";
     notification.style.textAlign = "center";
     document.body.appendChild(notification);
-  
+
     setTimeout(function() {
       notification.style.display = "none";
-    }, 3000);
+    }, 6000);
   }
 
   // Sign in the user with email and password
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function(user) {
-      console.log("User signed in:", user);
-      showFlashNotification("Verification successful");
-      
-      // Fetch data from fetchData.php using the email address
-      const fetchDataURL = `fetchData.php?email=${email}`;
-      
-      $.ajax({
-        url: fetchDataURL,
-        type: "GET",
-        success: function(data) {
-          console.log(data);
-          // Redirect the user to the all_transactions.html page and pass the data to the page
-          // window.location.href = `all_transactions.html?data=${data}`;
-        },
-        error: function(error) {
-          console.error(error);
-          showFlashNotification("Error fetching data: " + error);
-        }
-      });
-    })
-    .catch(function(error) {
-      let errorCode = error.code;
+  .then(function(user) {
+    const userEmail = user.user.email;
+
+    // Create a custom token using the user's email
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+      .then(function(idToken) {
+        // Store the token in local storage
+        sessionStorage.setItem('token', idToken);
+
+        showFlashNotification("Verification successful");
+
+        // Fetch data from fetchData.php using the email address
+        const fetchDataURL = `fetchData.php?email=${email}`;
+
+        $.ajax({
+          url: fetchDataURL,
+          type: "GET",
+          success: function(data) {
+            try {
+              sessionStorage.setItem('userData', JSON.stringify(data));
+              const userData = JSON.parse(sessionStorage.getItem('userData'));         
+              console.log(userData)
+
+              // Redirect the user to the all_transactions.html page and pass the token and data to the page
+              // window.location.href = "all_transactions.html";
+            } catch (error) {
+              showFlashNotification("Error parsing user data: " + error);
+            }
+          },
+          error: function(error) {
+            showFlashNotification("Error fetching user data: " + error.responseText);
+          }        
+        });
+      })
+      .catch(function(error) {      
       let errorMessage = error.message;
-      console.error("Error authenticating user:", errorCode, errorMessage);
-      showFlashNotification("Error authenticating user: " + errorMessage);
-      // Show an error message to the user
-    });
+      showFlashNotification("Error creating token: " + errorMessage);
+        // Handle errors with getting the token
+      });
+  })
+  .catch(function(error) {
+    let errorMessage = error.message;
+    showFlashNotification("Error authenticating user: " + errorMessage);
+    // Show an error message to the user
+  });
 });
